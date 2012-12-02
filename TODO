@@ -1,0 +1,9 @@
+things TODO :
+
+There are still many things to do to improve this code
+
+
+add more comments
+change the help message
+config.cfg : use a json file so that it can be used by an other application
+
