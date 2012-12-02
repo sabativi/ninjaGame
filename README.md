@@ -2,7 +2,9 @@ ninjaGame
 =========
 
 A game written in python
-You are a Ninja in a city, run and kill your ennemy to get points
+You are a Ninja in a city, run and kill your ennemies to get points
+
+To play the game, you need to download python and the pygame library
 
 A description of which file is used for :
 	
