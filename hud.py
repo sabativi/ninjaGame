@@ -1,3 +1,5 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 *-*
 import time
 import pygame
 
@@ -15,9 +17,9 @@ class Hud(state.State):
 	attributes:
 		display : the current working surface
 		font_manager : the font manager uses to display
-		shuriken_element
-		fps_element
-		score_element
+		shuriken_element :
+		fps_element : here to display the framerate of the game
+		score_element :
 	static attributes:
 		player
 		timer

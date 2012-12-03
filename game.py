@@ -1,3 +1,5 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 *-*
 import time
 import pygame
 from pygame.locals import *
@@ -15,33 +17,41 @@ from config import *
 class Game(state.State):
     """
     attributes
-        timer
-        display
-        level_manager
-        player
-        hud_manager
-        background
-        music
+        timer : the time spent playing
+        display : the surface to display
+        level_manager : create the state machine 
+        player : the player of the game
+        hud_manager : state to add informations of score on the image
+        background : background image of the game
+        music : music of the game
     static attributes
-        score
-        streak_counter
-        combo_timer
-        player
+        score : the score of the game while playing
+        streak_counter : help handling combo 
+        combo_timer : timer for combo
+        player : player of the game
     """
     score = 0
     streak_counter = 0
     combo_timer = time.clock()
     player
 
-    def __init__(self):
+    def __init__(self,screen):
         self.timer = pygame.time.Clock()
         self.display = pygame.display.get_surface()
+        ## create the state machine for the level of the game
+        ## the machine will stay indefinitely in this state because
+        ## we did not implement a reason method for it
         self.level_manager = state.StateMachine(self, level.Level())
+        ## create  the player and assign it to the game
         self.player = player.Player()
         Game.player = self.player
+        ## create an other state machine which will stay in the hud state also
         self.hud_manager = state.StateMachine(self, hud.Hud(self, self.player, self.timer))
         self.background = load_image(getGameBackground())
+        self.background = pygame.transform.scale(self.background,(screen.width,screen.height))
+        self.screen = screen
         surface_manager.add(self.player)
+        self.player.startGame()
         self.music = load_sound(getGameSound())
         self.music.play(loops=-1)
 
@@ -54,12 +64,12 @@ class Game(state.State):
         keys = pygame.key.get_pressed()
         if keys[K_ESCAPE]:
             self.level_manager.current_state.exit()
-            return title.Title()
+            return title.Title(self.screen)
         if self.player.pos_y > self.display.get_height():
             if Game.streak_counter > 1:
                 Game.score += 5 * (Game.streak_counter*2)
             self.level_manager.current_state.exit()
-            return highscores.HighScores(Game.score)
+            return highscores.HighScores(Game.score,self.screen)
 
     def act(self):
         self.timer.tick(60)

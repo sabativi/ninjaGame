@@ -47,8 +47,9 @@ class Enemy(pygame.sprite.DirtySprite):
         self.dirty = 1
 
     def update(self):
-        ## TODO : apparently an enemy will always come from two directions
+        ## INFO : an enemy will always come from two directions
         ## the shuriken of the player is only able to throw in one direction
+        ## TODO : the enemy, ennemy can arrive from many directions
         if self.pos_x < 0 - self.rect.width:
             surface_manager.remove(self)
 

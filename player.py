@@ -55,22 +55,36 @@ class Player(pygame.sprite.DirtySprite):
         self.shurikens = 50
         self.throw_sound = load_sound(getThrowSound())
 
+        ## TODO : change this, this is awful
+        self.first = True
+
+    ## this function is here for the first moment of the game
+    ## TODO : choose a good starting point not 300
+    def startGame(self):
+        self.pos_x += 10
+
+        self.current_frame = (self.current_frame + 1)  % getNumberFramePlayer()
+        self.image = self.frame_set[self.current_frame]
+
+        self.dirty = 1
+        ## we update the current rect by only updating the lefttop point
+        self.rect.topleft = (self.pos_x, self.pos_y)
+
     def update(self):
-
-        ## Here for the first second of the game to ensure that the ninja
-        ## will be at the same x position
-
-        if self.pos_x < 100:
-            self.pos_x += 10
-
         ## NOTE : we go to the next position if we have waited more
         ## than .05 s and we are not jumping
+        
+        if self.first:
+            while self.pos_x < 100:
+                self.startGame()
+            self.first = False
+
         if time.clock() >= self.timer + .001 and not self.is_jumping:
             self.current_frame = (self.current_frame + 1)  % getNumberFramePlayer()
             self.image = self.frame_set[self.current_frame]
             self.timer = time.clock()
 
-        if on_platform(self):
+        if self.on_platform():
             self.is_jumping = False
             self.is_falling = False
             self.current_jump = 0
@@ -103,16 +117,16 @@ class Player(pygame.sprite.DirtySprite):
             surface_manager.add(projectile.Projectile(self))
             self.shurikens -= 1
 
-## Why this function is not inside the class ??
-def on_platform(player):
-    collidelist = pygame.sprite.spritecollide(player,surface_manager.surface_list, False)
+    ## check if you are on platform
+    def on_platform(self):
+        collidelist = pygame.sprite.spritecollide(self,surface_manager.surface_list, False)
 
-    for item in collidelist:
-        if type(item) is enemy.Enemy:
-            continue
-        if type(item) is platform.Platform or \
-            type(item) is platform.StartingPlatform:
-            if (player.pos_y + player.rect.height) <= (item.pos_y + 8) and\
-                (player.pos_x + player.rect.width) >= item.pos_x:
-                return True
-    return False
+        for item in collidelist:
+            if type(item) is enemy.Enemy:
+                continue
+            if type(item) is platform.Platform or \
+                type(item) is platform.StartingPlatform:
+                if (self.pos_y + self.rect.height) <= (item.pos_y + 8) and\
+                    (self.pos_x + self.rect.width) >= item.pos_x:
+                    return True
+        return False

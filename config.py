@@ -4,18 +4,31 @@
 # Import modules
 import os
 import sys
+
 """
-With the configFile, we can have access to all local variables
+With the configFile, we can have access to all global variables
 """
+
 import ConfigParser
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 config_file = os.path.join(main_dir,'config.cfg')
+
 if os.path.isfile(config_file):
     """ We load the configFile """
     config=ConfigParser.ConfigParser()
     config.read(config_file)
 else:
     sys.exit("Error, config_file : " + config_file +" cannot be found")
+
+def setConfigValue(section,option,value):
+    if config.has_section(section) and config.has_option(section,option):
+        config.set(section,option,value)
+        f = open(config_file,"w")
+        config.write(f)
+        f.close()
+    else:
+        sys.exit("mauvaise section ou option ")
+
 
 
 def getDataDir():
@@ -131,3 +144,5 @@ def getTitleHelpImage():
 
 def getTitleSound():
     return config.get('TITLE','SOUND')
+
+

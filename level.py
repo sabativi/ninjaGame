@@ -36,21 +36,25 @@ class Level(state.State):
     def act(self):
         self.check_platforms()
 
-        ## NOTE : we can also play on the number of platforms
+        ## we can choose the distance between the number of platforms
+        DISTANCE_BETWEEN_PLATFORM = random.randint(100, 200)
         if (len(self.current_platforms) < self.num_of_platforms) \
             and ((self.current_platforms[-1].pos_x +\
                 self.current_platforms[-1].rect.width) \
-                <= (self.display.get_width() - random.randint(100, 600))):
+                <= (self.display.get_width() - DISTANCE_BETWEEN_PLATFORM)):
             new_platform = platform.Platform(getLevelPlatformImage())
             surface_manager.add(new_platform)
             self.current_platforms.append(new_platform)
 
-        if time.clock() >= self.time_since_last_powerup + 20:
+        ## we can choose the time between two powerups
+        TIME_BETWEEN_POWERUP = 1
+        if time.clock() >= self.time_since_last_powerup + TIME_BETWEEN_POWERUP:
             surface_manager.add(powerup.ShurikenPU())
             self.time_since_last_powerup = time.clock()
 
-        ## it is here that we play on when to add new Ennemy and how to
-        if time.clock() >= self.time_since_last_enemyspawn + .3:
+        ## we can choose the time between two ennemies
+        TIME_BETWEEN_ENEMY = 0.2
+        if time.clock() >= self.time_since_last_enemyspawn + TIME_BETWEEN_ENEMY:
             surface_manager.add(enemy.Enemy())
             self.time_since_last_enemyspawn = time.clock()
 

@@ -35,6 +35,7 @@ class StateMachine(object):
 
         # provide state references to host object and fsm instance
         self.current_state.host = self.host
+        ## TODO : strange situation ...
         self.current_state.fsm = self
 
         self.current_state.enter()

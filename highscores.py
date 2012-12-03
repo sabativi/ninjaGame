@@ -58,9 +58,11 @@ class HighScores(state.State):
         music : the music while displaying the HighScores windows
     """
     high_scores = []
-    def __init__(self, score):
+    def __init__(self,score,screen):
         self.display = pygame.display.get_surface()
         self.background = load_image(getHighScoresImage())
+        self.screen = screen
+        self.background = pygame.transform.scale(self.background,(screen.width,screen.height))
 
         high_score_file = HighScoresFile()
         HighScores.high_scores = high_score_file.getBestScores()
@@ -75,7 +77,7 @@ class HighScores(state.State):
         high_score_file.writeNewScores(HighScores.high_scores)
 
         self.header_manager = load_font(getHighScoresHeaderManagerFont(),
-                        getHighScoresHeaderManagerFontSize())
+                                        getHighScoresHeaderManagerFontSize())
         self.header = self.header_manager.render("YOUR SCORES:%d"% hud.Hud.game.score, True, (255, 255, 255))
         self.header_rect = pygame.Rect(
             (self.display.get_width()/2 -self.header.get_width()/2, 0),
@@ -94,7 +96,7 @@ class HighScores(state.State):
     def reason(self):
         keys = pygame.key.get_pressed()
         if keys[K_RETURN]:
-            return title.Title()
+            return title.Title(self.screen)
 
     def act(self):
         self.display.blit(self.background, (0, 0))

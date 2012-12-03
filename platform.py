@@ -21,9 +21,11 @@ class Platform(pygame.sprite.Sprite):
         self.surface_manager = surface_manager
         self.image = load_image(img_location)
         ## NOTE : it is here that we can choose the size of the plaform
+        ## TODO : change this
         self.image = pygame.transform.scale(self.image,
-            (random.randint(100, 1000), self.image.get_height()))
+            (random.randint(500, 1000), self.image.get_height()))
         self.rect = pygame.Rect(0, 0, self.image.get_width(), self.image.get_height())
+        ## position of the platform
         self.pos_x = self.display.get_width()
         self.pos_y = random.randint(self.display.get_height() - self.rect.height*5,
             self.display.get_height() - self.rect.height)
@@ -63,5 +65,5 @@ class StartingPlatform(pygame.sprite.Sprite):
             surface_manager.remove(self)
             return
         else:
-            self.pos_x -= 12
-            self.rect.topleft = (self.pos_x, self.pos_y)
+           self.pos_x -= 12
+           self.rect.topleft = (self.pos_x, self.pos_y)

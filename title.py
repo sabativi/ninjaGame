@@ -6,38 +6,44 @@ from pygame.locals import *
 
 import state
 import game
+import screen
 import surface_manager
 from utile import *
 from config import *
 from color import *
 
 class Title(state.State):
+
+    ## TODO : this class is not very clear, we need to factorize things 
+
     """
     attributes:
-        display
-        background
-        font_manager
-        help_font_manager
-        title_font_manager
-        title
-        title_rect
-        title_color
-        start_game
-        start_game_rect
-        help
-        help_rect
-        help_image
-        help_image_rect
-        exit_game
-        exit_game_rect
-        current_choice
-        show_help
-        timer
-        music
+        display : the display surface for the title
+        background : the background help_image
+        font_manager : the font that we use to display
+        help_font_manager : the font_manager for the help message
+        title_font_manager : 
+        title : 
+        title_rect :
+        title_color :
+        start_game :
+        start_game_rect :
+        help :
+        help_rect :
+        help_image :
+        help_image_rect :
+        exit_game :
+        exit_game_rect :
+        current_choice :
+        show_help :
+        timer :
+        music : the music plays while waiting on the screen
     """
-    def __init__(self):
+    def __init__(self,screen):
         self.display = pygame.display.get_surface()
         self.background = load_image(getTitleBackground())
+        self.background = pygame.transform.scale(self.background,(screen.width,screen.height))
+        self.screen = screen
         self.font_manager = load_font(getTitleFont(),getTitleFontSize())
         self.help_font_manager = load_font(getTitleHelpFont(),getTitleHelpFontSize())
         self.title_font_manager = load_font(getTitleTitleFont(),getTitleTitleFontSize())
@@ -92,7 +98,7 @@ class Title(state.State):
                         self.show_help = False
                     else:
                         if self.current_choice == 1:
-                            return game.Game()
+                            return game.Game(self.screen)
                         elif self.current_choice == 2:
                             self.show_help = True
                         elif self.current_choice == 3:
@@ -119,8 +125,9 @@ class Title(state.State):
         pygame.display.update()
 
     def next(self):
-        ## TODO : we should define black and white color
-        ## NOTE : we could set the next choice randomly
+        ## TODO : change this and factorize
+        ## just here to select which mode we want to add
+        ## do a map
         if self.current_choice == 1:
             self.start_game = self.font_manager.render("START", True, blackColor())
             self.help = self.font_manager.render("HELP", True, whiteColor())
@@ -138,6 +145,7 @@ class Title(state.State):
             self.current_choice = 1
 
     def previous(self):
+        ## TODO : change this ! factorize
         if self.current_choice == 1:
             self.start_game = self.font_manager.render("START", True, blackColor())
             self.help = self.font_manager.render("HELP", True,blackColor())
@@ -155,6 +163,7 @@ class Title(state.State):
             self.current_choice = 2
 
     def animate_title(self):
+        ## TODO : do it randomly
         if self.title_color == "white":
             self.title = self.title_font_manager.render("RUN!", True,blackColor())
             self.title_color = "black"

@@ -1,21 +1,27 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 *-*
 import pygame
 
 import state
 import title
+import screen
+from config import *
 
-pygame.init()
-## NOTE : choose the resolution
-display = pygame.display.set_mode((1000,600))
-pygame.display.set_caption("Run! Space to Jump - 1 to Throw")
 
-class RBR():
-    def __init__(self):
-        self.sm = state.StateMachine(self, title.Title())
+
+class initGame():
+    def __init__(self,vidInfo):
+    	resolution = screen.Screen(vidInfo)
+        self.sm = state.StateMachine(self, title.Title(resolution))
 
     def start(self):
         while True:
             self.sm.update()
 
 if __name__ == "__main__":
-    g = RBR()
-    g.start()
+	pygame.init()
+	## the game will be played in fullscreen mode
+	display = pygame.display.set_mode((0,0),pygame.FULLSCREEN,0)
+	pygame.display.set_caption("Run! Space to Jump - Use the mouse to Throw")
+	g = initGame(pygame.display.Info())
+	g.start()
