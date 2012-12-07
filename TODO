@@ -1,9 +1,11 @@
 things TODO :
 
-There are still many things to do to improve this code
+There are still many things to do to improve this code.
 
+You can play it but as it is the first time that I use pygame, I have learned by doing
 
-add more comments
-change the help message
 config.cfg : use a json file so that it can be used by an other application
-...
+
+A bug remain with the refresh of the background screen
+
+
