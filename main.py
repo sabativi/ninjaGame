@@ -21,7 +21,7 @@ class initGame():
 if __name__ == "__main__":
 	pygame.init()
 	## the game will be played in fullscreen mode
-	display = pygame.display.set_mode((0,0),pygame.FULLSCREEN,0)
+	display = pygame.display.set_mode((800,600))
 	pygame.display.set_caption("Run! Space to Jump - Use the mouse to Throw")
 	g = initGame(pygame.display.Info())
 	g.start()

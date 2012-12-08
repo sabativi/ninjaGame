@@ -145,4 +145,16 @@ def getTitleHelpImage():
 def getTitleSound():
     return config.get('TITLE','SOUND')
 
+def getHelpBackground():
+    return config.get('HELP','BACKGROUND')   
+
+def getHelpFont():
+    return config.get('HELP','FONT')
+
+def getHelpFontSize():
+    return int(config.get('HELP','FONT_SIZE'))
+
+def getHelpMessage():
+    return config.get('HELP','HELP_FILE_MESSAGE')
+
 

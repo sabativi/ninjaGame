@@ -5,8 +5,8 @@
 import re
 
 ## class to get information on the screen size
-## in order to adapt the size of the game to the resolution 
-## of the player
+## in order to adapt the size of the game to the 
+## screen player resolution
 class Screen(object):
 
 	def __init__(self,vidInfo):
