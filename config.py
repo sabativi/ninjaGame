@@ -30,7 +30,6 @@ def setConfigValue(section,option,value):
         sys.exit("mauvaise section ou option ")
 
 
-
 def getDataDir():
     return config.get('PROGRAMS','DATA_DIR')
 
@@ -42,6 +41,9 @@ def getSoundDir():
 
 def getFontDir():
     return os.path.join(getDataDir(),config.get('PROGRAMS','FONT_DIR'))
+
+def getVideoDir():
+    return os.path.join(getDataDir(),config.get('PROGRAMS','VIDEO_DIR'))
 
 def getEnemyFrame(num):
     return config.get('ENEMY','FRAME_XXX').replace("XXX",str(num))
@@ -127,20 +129,11 @@ def getTitleFont():
 def getTitleFontSize():
     return int(config.get('TITLE','FONT_SIZE'))
 
-def getTitleHelpFont():
-    return config.get('TITLE','HELP_FONT')
-
-def getTitleHelpFontSize():
-    return int(config.get('TITLE','HELP_FONT_SIZE'))
-
 def getTitleTitleFont():
     return config.get('TITLE','TITLE_FONT')
 
 def getTitleTitleFontSize():
     return int(config.get('TITLE','TITLE_FONT_SIZE'))
-
-def getTitleHelpImage():
-    return config.get('TITLE','HELP_IMAGE')
 
 def getTitleSound():
     return config.get('TITLE','SOUND')
@@ -157,4 +150,6 @@ def getHelpFontSize():
 def getHelpMessage():
     return config.get('HELP','HELP_FILE_MESSAGE')
 
+def getDemoVideo():
+    return config.get('DEMO','VIDEO')
 

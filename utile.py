@@ -79,6 +79,18 @@ def load_font(name,size):
         print "cannot load font: %s",fullname
     return font
 
+"""
+This function loads a video 
+"""
+
+def load_movie(name):
+    fullname = os.path.join(getVideoDir(), name)
+    try:
+        movie = pygame.movie.Movie(fullname)
+    except pygame.error:
+        print 'cannot load video : ', fullname
+    
+    return movie
 
 """
 This function return a pygameRect to know where the current surface position is 
@@ -90,6 +102,13 @@ def getPygameRect(currentSurface,backgroundSurface,position):
     rectLeft = backgroundSurface.get_width()/2-currentSurface.get_width()/2
     rectTop = backgroundSurface.get_height()/2 + currentSurface.get_height()*position
     return pygame.Rect((rectLeft,rectTop),(rectWidth,rectHeight))
+
+
+
+"""
+I find this piece of code on internet, it helps when you want to display
+a text on a multiline
+"""
 
 
 class TextRectException:
@@ -120,8 +139,6 @@ def render_textrect(string, font, rect, text_color, background_color, justificat
     Success - a surface object with the text rendered onto it.
     Failure - raises a TextRectException if the text won't fit onto the surface.
     """
-
-    import pygame
     
     final_lines = []
 

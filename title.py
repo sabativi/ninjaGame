@@ -59,30 +59,26 @@ class Title(state.State):
 
         ## load font
         self.font_manager = load_font(getTitleFont(),getTitleFontSize())
-        self.help_font_manager = load_font(getTitleHelpFont(),getTitleHelpFontSize())
         self.title_font_manager = load_font(getTitleTitleFont(),getTitleTitleFontSize())
 
         ## replace 1 with the map of choices also 3
-        self.current_choice = Choice(1,3)
+        self.current_choice = Choice(1,4)
 
         ## initialize the menu
-        
         self.title = self.title_font_manager.render("RUN!", True, whiteColor())
         self.title_rect = getPygameRect(self.title,self.display,-2)
 
         self.start_game = self.font_manager.render("START", True, whiteColor())
         self.start_game_rect = getPygameRect(self.start_game,self.display,-1)
 
+        self.demo = self.font_manager.render("DEMO", True, blackColor())
+        self.demo_rect = getPygameRect(self.demo,self.display,0)
+
         self.help = self.font_manager.render("HELP", True, blackColor())
-        self.help_rect = getPygameRect(self.help,self.display,0)
+        self.help_rect = getPygameRect(self.help,self.display,1)
 
         self.exit_game = self.font_manager.render("EXIT", True, blackColor())
-        self.exit_game_rect = getPygameRect(self.exit_game, self.display,1)
-
-        self.help_image = load_image(getTitleHelpImage())
-        self.help_image_rect = getPygameRect(self.help_image,self.display,POS_CENTER)
-
-        self.show_help = False
+        self.exit_game_rect = getPygameRect(self.exit_game, self.display,2)
 
         self.timer = pygame.time.Clock()
 
@@ -97,14 +93,18 @@ class Title(state.State):
     ## not well define with the help message
     def reason(self):
         for event in pygame.event.get():
-            if event.type == KEYDOWN and event.key == K_RETURN:
-                if self.current_choice.choice == 1:
-                    return game.Game(self.screen)
-                elif self.current_choice.choice == 2:
-                    return Help(self.screen)
-                elif self.current_choice.choice == 3:
-                    pygame.quit()
-                    sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN:
+                    if self.current_choice.choice == 1:
+                        return game.Game(self.screen)
+                    elif self.current_choice.choice == 2:
+                        pass
+                        return Demo(self.screen,getDemoVideo())
+                    elif self.current_choice.choice == 3:
+                        return Help(self.screen)
+                    elif self.current_choice.choice == 4:
+                        pygame.quit()
+                        sys.exit()
                 if event.key == K_DOWN:
                     self.next()
                 if event.key == K_UP:
@@ -113,17 +113,13 @@ class Title(state.State):
     def act(self):
         self.timer.tick(40)
         self.animate_title()
-
+        ## blit all the surfaces
         self.display.blit(self.background, (0, 0))
-
-        if self.show_help:
-            self.displayHelpMessage()
-        else:
-            self.display.blit(self.title, self.title_rect)
-            self.display.blit(self.start_game, self.start_game_rect)
-            self.display.blit(self.help, self.help_rect)
-            self.display.blit(self.exit_game, self.exit_game_rect)
-
+        self.display.blit(self.title, self.title_rect)
+        self.display.blit(self.start_game, self.start_game_rect)
+        self.display.blit(self.demo,self.demo_rect)
+        self.display.blit(self.help, self.help_rect)
+        self.display.blit(self.exit_game, self.exit_game_rect)
         pygame.display.update()
 
     def next(self):
@@ -143,8 +139,9 @@ class Title(state.State):
 
     def updateMenuColor(self):
         self.start_game = self.font_manager.render("START", True, self.current_choice.color(1))
-        self.help = self.font_manager.render("HELP", True,self.current_choice.color(2))
-        self.exit_game = self.font_manager.render("EXIT", True,self.current_choice.color(3))
+        self.demo = self.font_manager.render("DEMO", True, self.current_choice.color(2))
+        self.help = self.font_manager.render("HELP", True, self.current_choice.color(3))
+        self.exit_game = self.font_manager.render("EXIT", True,self.current_choice.color(4))
 
     def displayHelpMessage(self):
         self.display.blit(self.help_image, self.help_image_rect)
@@ -189,11 +186,10 @@ class Help(state.State):
         self.help_font_manager = load_font(getHelpFont(),getHelpFontSize())
         message = fileToString(getHelpMessage())
         assert message != "" and message != None
+
         ## TODO :  replace this value
         self.help_message_rect = pygame.Rect((0,0),(500,500))
         self.help_message = render_textrect(message, self.help_font_manager,self.help_message_rect, whiteColor(), (48, 48, 48))
-
-        #self.help_message = self.help_font_manager.render(message,True,whiteColor())
          
 
     def exit(self):
@@ -222,3 +218,32 @@ def fileToString(name):
     for line in lines:
         message += line
     return message
+
+
+class Demo(state.State):
+
+    def __init__(self,screen,videoPath):
+        self.display = pygame.display.get_surface()
+        self.screen = screen
+        self.videoPath = videoPath
+        
+        ## this should allow us to have sound
+        ## but with this it crashes without any reason
+        #pygame.mixer.quit()
+
+        self.movie = load_movie(self.videoPath)
+        self.movie.set_display(self.display,self.display.get_rect())
+        self.movie.play()
+        pygame.time.delay(500)
+
+    def exit(self):
+        self.movie.stop()
+        pygame.display.flip()
+
+    def reason(self):
+        for event in pygame.event.get():
+            if event.type == KEYDOWN and event.key == K_RETURN:
+                return Title(self.screen)
+
+    def act(self):
+        pass
