@@ -1,0 +1,5 @@
+use the mouse to shrow shuriken
+
+It is by killing ennemies that you will gain points
+
+Use Space to jump
