@@ -33,23 +33,22 @@ class Game(state.State):
     score = 0
     streak_counter = 0
     combo_timer = time.clock()
-    player
 
-    def __init__(self,screen):
+    def __init__(self):
         self.timer = pygame.time.Clock()
         self.display = pygame.display.get_surface()
+        displayWidth = self.display.get_width()
+        displayHeight = self.display.get_height()
         ## create the state machine for the level of the game
         ## the machine will stay indefinitely in this state because
         ## we did not implement a reason method for it
         self.level_manager = state.StateMachine(self, level.Level())
         ## create  the player and assign it to the game
         self.player = player.Player()
-        Game.player = self.player
         ## create an other state machine which will stay in the hud state also
         self.hud_manager = state.StateMachine(self, hud.Hud(self, self.player, self.timer))
         self.background = load_image(getGameBackground())
-        self.background = pygame.transform.scale(self.background,(screen.width,screen.height))
-        self.screen = screen
+        self.background = pygame.transform.scale(self.background,(displayWidth,displayHeight))
         surface_manager.add(self.player)
         self.player.startGame()
         self.music = load_sound(getGameSound())
@@ -64,15 +63,15 @@ class Game(state.State):
         keys = pygame.key.get_pressed()
         if keys[K_ESCAPE]:
             self.level_manager.current_state.exit()
-            return title.Title(self.screen)
+            return title.Title()
         if self.player.pos_y > self.display.get_height():
             if Game.streak_counter > 1:
                 Game.score += 5 * (Game.streak_counter*2)
             self.level_manager.current_state.exit()
-            return highscores.HighScores(Game.score,self.screen)
+            return highscores.HighScores(Game.score)
 
     def act(self):
-        self.timer.tick(60)
+        self.timer.tick(80)
         surface_manager.clear(self.display, self.background)
 
         keys = pygame.key.get_pressed()
@@ -80,6 +79,11 @@ class Game(state.State):
             self.player.jump()
         else:
             self.player.stop_jumping()
+
+        if keys[K_LEFT]:
+            self.player.moveLeft()
+        elif keys[K_RIGHT]:
+            self.player.moveRight()            
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:

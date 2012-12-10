@@ -13,7 +13,7 @@ from config import *
 class Hud(state.State):
 	"""
 	Hud = Head up display
-	It is here that we display informations that you can see on the screen
+	It is here that we display informations that you can see on the top of the screen
 	attributes:
 		display : the current working surface
 		font_manager : the font manager uses to display

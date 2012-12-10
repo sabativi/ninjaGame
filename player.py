@@ -16,6 +16,11 @@ from utile import *
 
 class Player(pygame.sprite.DirtySprite):
 
+    ## there are still things to do in this class
+    ## too many numerical variables for instance
+    ## too many attributes
+    ## etc ...
+
     """
     attributes :
         display : the current working surface
@@ -117,10 +122,16 @@ class Player(pygame.sprite.DirtySprite):
             surface_manager.add(projectile.Projectile(self))
             self.shurikens -= 1
 
+    def moveRight(self):
+        self.pos_x+=1
+
+    def moveLeft(self):
+        if self.pos_x > self.rect.width / 2:
+            self.pos_x -= 1
+
     ## check if you are on platform
     def on_platform(self):
         collidelist = pygame.sprite.spritecollide(self,surface_manager.surface_list, False)
-
         for item in collidelist:
             if type(item) is enemy.Enemy:
                 continue

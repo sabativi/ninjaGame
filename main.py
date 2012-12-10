@@ -4,15 +4,13 @@ import pygame
 
 import state
 import title
-import screen
 from config import *
 
 
 
 class initGame():
     def __init__(self,vidInfo):
-    	resolution = screen.Screen(vidInfo)
-        self.sm = state.StateMachine(self, title.Title(resolution))
+        self.sm = state.StateMachine(self, title.Title())
 
     def start(self):
         while True:

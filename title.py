@@ -27,7 +27,6 @@ class Title(state.State):
         display : the display surface for the title
         background : the background help_image
         font_manager : the font that we use to display
-        help_font_manager : the font_manager for the help message
         title_font_manager : 
         title : 
         title_rect :
@@ -36,22 +35,20 @@ class Title(state.State):
         start_game_rect :
         help :
         help_rect :
-        help_image :
-        help_image_rect :
         exit_game :
         exit_game_rect :
-        current_choice :
-        show_help :
+        current_choice : the choice of the menu on which we are
         timer :
         music : the music plays while waiting on the screen
     """
-    def __init__(self,screen):
+    def __init__(self):
         self.display = pygame.display.get_surface()
+        displayWidth = self.display.get_width()
+        displayHeight = self.display.get_height()
 
         ## load the background image
-        self.screen = screen
         self.background = load_image(getTitleBackground())
-        self.background = pygame.transform.scale(self.background,(screen.width,screen.height))
+        self.background = pygame.transform.scale(self.background,(displayWidth,displayHeight))
         
         ## load the music and starts playing
         self.music = load_sound(getTitleSound())
@@ -83,7 +80,6 @@ class Title(state.State):
         self.timer = pygame.time.Clock()
 
        
-
     def exit(self):
         self.music.stop()
         self.display.blit(self.background, (0, 0))
@@ -96,12 +92,12 @@ class Title(state.State):
             if event.type == KEYDOWN:
                 if event.key == K_RETURN:
                     if self.current_choice.choice == 1:
-                        return game.Game(self.screen)
+                        return game.Game()
                     elif self.current_choice.choice == 2:
                         pass
-                        return Demo(self.screen,getDemoVideo())
+                        return Demo(getDemoVideo())
                     elif self.current_choice.choice == 3:
-                        return Help(self.screen)
+                        return Help()
                     elif self.current_choice.choice == 4:
                         pygame.quit()
                         sys.exit()
@@ -175,12 +171,13 @@ class Choice():
 
 class Help(state.State):
 
-    def __init__(self,screen):
+    def __init__(self):
         self.display = pygame.display.get_surface()
+        displayWidth = self.display.get_width()
+        displayHeight = self.display.get_height()
         ## load the background image
-        self.screen = screen
         self.background = load_image(getHelpBackground())
-        self.background = pygame.transform.scale(self.background,(screen.width,screen.height))
+        self.background = pygame.transform.scale(self.background,(displayWidth,displayHeight))
 
         ## load the font to write the text
         self.help_font_manager = load_font(getHelpFont(),getHelpFontSize())
@@ -199,7 +196,7 @@ class Help(state.State):
     def reason(self):
         for event in pygame.event.get():
             if event.type == KEYDOWN and event.key == K_RETURN:
-                return Title(self.screen)
+                return Title()
 
     def act(self):        
         self.display.blit(self.background, (0, 0))
@@ -222,11 +219,10 @@ def fileToString(name):
 
 class Demo(state.State):
 
-    def __init__(self,screen,videoPath):
+    def __init__(self,videoPath):
         self.display = pygame.display.get_surface()
-        self.screen = screen
         self.videoPath = videoPath
-        
+
         ## this should allow us to have sound
         ## but with this it crashes without any reason
         #pygame.mixer.quit()
@@ -243,7 +239,7 @@ class Demo(state.State):
     def reason(self):
         for event in pygame.event.get():
             if event.type == KEYDOWN and event.key == K_RETURN:
-                return Title(self.screen)
+                return Title()
 
     def act(self):
         pass
