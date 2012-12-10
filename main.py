@@ -9,7 +9,10 @@ from config import *
 
 
 class initGame():
-    def __init__(self,vidInfo):
+    def __init__(self,caption):
+    	pygame.init()
+    	display = pygame.display.set_mode((800,600))
+    	pygame.display.set_caption(caption)
         self.sm = state.StateMachine(self, title.Title())
 
     def start(self):
@@ -17,9 +20,5 @@ class initGame():
             self.sm.update()
 
 if __name__ == "__main__":
-	pygame.init()
-	## the game will be played in fullscreen mode
-	display = pygame.display.set_mode((800,600))
-	pygame.display.set_caption("Run! Space to Jump - Use the mouse to Throw")
-	g = initGame(pygame.display.Info())
+	g = initGame("Run Ninja")
 	g.start()
