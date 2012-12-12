@@ -66,7 +66,7 @@ class Player(pygame.sprite.DirtySprite):
     ## this function is here for the first moment of the game
     ## TODO : choose a good starting point not 300
     def startGame(self):
-        self.pos_x += 10
+        self.pos_x += getGamePixelMove()
 
         self.current_frame = (self.current_frame + 1)  % getNumberFramePlayer()
         self.image = self.frame_set[self.current_frame]
@@ -123,11 +123,11 @@ class Player(pygame.sprite.DirtySprite):
             self.shurikens -= 1
 
     def moveRight(self):
-        self.pos_x+=1
+        if self.pos_x < self.display.get_width() / 2:
+            self.pos_x+=1
 
     def moveLeft(self):
-        if self.pos_x > self.rect.width / 2:
-            self.pos_x -= 1
+        self.pos_x -= 1
 
     ## check if you are on platform
     def on_platform(self):
@@ -135,8 +135,7 @@ class Player(pygame.sprite.DirtySprite):
         for item in collidelist:
             if type(item) is enemy.Enemy:
                 continue
-            if type(item) is platform.Platform or \
-                type(item) is platform.StartingPlatform:
+            if type(item) is platform.Platform:
                 if (self.pos_y + self.rect.height) <= (item.pos_y + 8) and\
                     (self.pos_x + self.rect.width) >= item.pos_x:
                     return True

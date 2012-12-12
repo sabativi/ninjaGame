@@ -7,8 +7,6 @@ from pygame.locals import *
 import state
 import game
 import random
-import screen
-#import help
 import surface_manager
 from utile import *
 from config import *
@@ -94,7 +92,6 @@ class Title(state.State):
                     if self.current_choice.choice == 1:
                         return game.Game()
                     elif self.current_choice.choice == 2:
-                        pass
                         return Demo(getDemoVideo())
                     elif self.current_choice.choice == 3:
                         return Help()
@@ -240,6 +237,8 @@ class Demo(state.State):
         for event in pygame.event.get():
             if event.type == KEYDOWN and event.key == K_RETURN:
                 return Title()
+        if self.movie.get_busy() != True:
+            return Title()
 
     def act(self):
         pass

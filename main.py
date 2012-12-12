@@ -11,7 +11,7 @@ from config import *
 class initGame():
     def __init__(self,caption):
     	pygame.init()
-    	display = pygame.display.set_mode((800,600))
+    	self.display = pygame.display.set_mode((800,600))
     	pygame.display.set_caption(caption)
         self.sm = state.StateMachine(self, title.Title())
 

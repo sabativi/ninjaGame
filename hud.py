@@ -171,11 +171,11 @@ class ComboElement(pygame.sprite.DirtySprite):
 			surface_manager.remove(self)
 
 		if not self.has_shown and self.pos_x < 0:
-			self.pos_x += 12
+			self.pos_x += getGamePixelMove()
 
 		if self.pos_x >= 0 - self.rect.width and time.clock() > self.delay + 3:
 			self.has_shown = True
-			self.pos_x -= 12
+			self.pos_x -= getGamePixelMove()
 
 		self.rect.topleft = (self.pos_x, self.pos_y)
 		self.dirty = 1

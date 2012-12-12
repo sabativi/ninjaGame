@@ -120,6 +120,9 @@ def getGameBackground():
 def getGameSound():
     return config.get('GAME','SOUND')
 
+def getGamePixelMove():
+    return int(config.get('GAME',"PIXELMOVE"))
+
 def getTitleBackground():
     return config.get('TITLE','BACKGROUND')
 

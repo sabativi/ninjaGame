@@ -89,8 +89,6 @@ class HighScores(state.State):
         self.music = load_sound(getHighScoresMusic())
         self.music.play(loops=-1)
 
-
-
     def exit(self):
         self.music.stop()
 

@@ -33,19 +33,16 @@ class Game(state.State):
     score = 0
     streak_counter = 0
     combo_timer = time.clock()
+    player
 
     def __init__(self):
         self.timer = pygame.time.Clock()
         self.display = pygame.display.get_surface()
         displayWidth = self.display.get_width()
         displayHeight = self.display.get_height()
-        ## create the state machine for the level of the game
-        ## the machine will stay indefinitely in this state because
-        ## we did not implement a reason method for it
-        self.level_manager = state.StateMachine(self, level.Level())
-        ## create  the player and assign it to the game
         self.player = player.Player()
-        ## create an other state machine which will stay in the hud state also
+        Game.player = self.player
+        self.level_manager = state.StateMachine(self,level.Level())
         self.hud_manager = state.StateMachine(self, hud.Hud(self, self.player, self.timer))
         self.background = load_image(getGameBackground())
         self.background = pygame.transform.scale(self.background,(displayWidth,displayHeight))
@@ -71,7 +68,7 @@ class Game(state.State):
             return highscores.HighScores(Game.score)
 
     def act(self):
-        self.timer.tick(80)
+        self.timer.tick(60)
         surface_manager.clear(self.display, self.background)
 
         keys = pygame.key.get_pressed()
@@ -79,12 +76,10 @@ class Game(state.State):
             self.player.jump()
         else:
             self.player.stop_jumping()
-
         if keys[K_LEFT]:
             self.player.moveLeft()
         elif keys[K_RIGHT]:
-            self.player.moveRight()            
-
+            self.player.moveRight() 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.player.throw_shuriken()
